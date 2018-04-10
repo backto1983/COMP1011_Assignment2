@@ -1,5 +1,9 @@
 package comp1011_assigment2;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -80,6 +84,38 @@ public class Book {
             throw new IllegalArgumentException("Valid genres are: " + getGenres());
     }
     
-    
-    
+    public void insertIntoDB() throws SQLException {
+        Connection conn = null;
+        
+        PreparedStatement preparedStatement = null;
+        
+        try {
+            //1. Connect to the database
+            conn = DriverManager.getConnection("jdbc:mysql://sql.computerstudi.es:3306/gc200358165", "gc200358165", "FBNs7TjT");
+            //2. Create a string that holds the query with "?" as user inputs
+            String sql = "INSERT INTO books (title, author, genre, publishingYear)" + "VALUES(?,?,?,?)";
+            //3. Prepare the query
+            preparedStatement = conn.prepareStatement(sql);
+            
+            //4. Bind the values to the parameters
+            preparedStatement.setString(1, title);  
+            preparedStatement.setString(2, author); 
+            preparedStatement.setString(3, genre); 
+            preparedStatement.setInt(4, year);
+            
+            preparedStatement.executeUpdate();
+        }
+        
+        catch(SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        
+        finally {
+            if(preparedStatement != null)
+                preparedStatement.close();
+            
+            if(conn != null)
+                conn.close();
+        }
+    }
 }

@@ -5,11 +5,17 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 /**
- *
+ * This is the PasswordGenerator class; it defines methods that allow password hashing
  * @author Henrique
  */
 public class PasswordGenerator {
 
+    /**
+     * This method will hash a password with a given salt and return it as a String
+     * @param passwordToEncrypt
+     * @param salt
+     * @return String generatedPassword
+     */
     public static String getSHA512Pwd(String passwordToEncrypt, byte[] salt) {
         String generatedPassword = null;
         
@@ -33,6 +39,11 @@ public class PasswordGenerator {
         return generatedPassword;
     }
     
+    /**
+     * This method will create a random salt consisting of 16 bytes
+     * @return 
+     * @throws java.security.NoSuchAlgorithmException
+     */
     public static byte[] getSalt() throws NoSuchAlgorithmException
     {
         SecureRandom sr = SecureRandom.getInstanceStrong();

@@ -66,6 +66,7 @@
             <Label fx:id="errorMsgLabel" prefHeight="17.0" prefWidth="338.0" />
             <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                <children>
+                  <Button fx:id="registeredBtn" mnemonicParsing="false" text="I'm already registered" />
                   <Button fx:id="submitBtn" mnemonicParsing="false" text="Submit" />
                </children>
             </HBox>

@@ -26,6 +26,7 @@ public class registrationViewController implements Initializable {
     @FXML private PasswordField confirmPwdField;
     @FXML private Label errorMsgLabel;
     @FXML private Button submitBtn;
+    @FXML private Button registeredBtn;
 
     /**
      * This method controls what happens when the submit button is pushed 
@@ -75,11 +76,20 @@ public class registrationViewController implements Initializable {
         }
         else 
             if (pwdField.getText().equals(confirmPwdField.getText())) {
-                errorMsgLabel.setText("Success");
                 return true;
             }
             else           
                 return false;      
+    }
+    
+    /**
+     * This method will change to the loginview without adding a new user
+     * @param event
+     * @throws java.io.IOException
+     */
+    public void registeredButtonPushed(ActionEvent event) throws IOException {
+        SceneChanger sc = new SceneChanger();
+        sc.changeScenes(event, "logInView.fxml", "Log In");
     }
     
     /**
@@ -98,5 +108,14 @@ public class registrationViewController implements Initializable {
                 Logger.getLogger(registrationViewController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+        
+        this.registeredBtn.setOnAction(event -> {
+            try {
+                registeredButtonPushed(event);
+            }
+            catch(IOException ex) {
+                Logger.getLogger(registrationViewController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });        
     }        
 }

@@ -64,7 +64,7 @@ public class User {
     }    
     
     /**
-     * 
+     * This method validates the email inputted by the user
      * @param email
      * @return 
      */

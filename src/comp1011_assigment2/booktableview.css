@@ -5,3 +5,8 @@
 .mainFxmlClass {
     -fx-background-color: lightgray;
 }
+
+.default-color0.chart-bar{
+    -fx-bar-fill: black;
+}
+

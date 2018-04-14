@@ -72,8 +72,14 @@ public class BookTableViewController implements Initializable {
         numberOfBooks.setLabel("Number of books");
         
         // Add data to the graphs
-        getDataForGraph();
-        
+        try{
+            getDataForGraph();
+        }
+        catch (SQLException e)
+        {
+            System.err.println(e);
+        }
+
         barChart.getData().addAll(booksPerGenreCount);
         
         //Configure the table columns
@@ -102,13 +108,63 @@ public class BookTableViewController implements Initializable {
         });
     }    
 
-    private void getDataForGraph() {
+    private void getDataForGraph() throws SQLException {
+        /*
         booksPerGenreCount.getData().add(new XYChart.Data("History", 2));
         booksPerGenreCount.getData().add(new XYChart.Data("Fantasy", 1));
         booksPerGenreCount.getData().add(new XYChart.Data("Crime", 3));
         booksPerGenreCount.getData().add(new XYChart.Data("Sci-Fi", 5));
         booksPerGenreCount.getData().add(new XYChart.Data("Political", 1));
         booksPerGenreCount.getData().add(new XYChart.Data("Adventure", 2));
+        */
+        
+        Connection conn=null;
+        Statement statement=null;
+        ResultSet resultSet=null;
+        
+        try {
+            conn = DriverManager.getConnection("jdbc:mysql://sql.computerstudi.es:3306/gc200358165", "gc200358165", "FBNs7TjT");
+        
+            statement = conn.createStatement();
+
+            String sql = "SELECT g.genre, \n" +
+"COUNT(CASE WHEN b.genre = 'Adventure' THEN 1 ELSE NULL END) AS 'Adventure', \n" +
+"COUNT(CASE WHEN b.genre = 'Biography' THEN 2 ELSE NULL END) AS 'Biography', \n" +
+"COUNT(CASE WHEN b.genre = 'Crime' THEN 3 ELSE NULL END) AS 'Crime', \n" +
+"COUNT(CASE WHEN b.genre = 'Fantasy' THEN 4 ELSE NULL END) AS 'Fantasy', \n" +
+"COUNT(CASE WHEN b.genre = 'History' THEN 5 ELSE NULL END) AS 'History', \n" +
+"COUNT(CASE WHEN b.genre = 'Sci-Fi' THEN 6 END) AS 'Sci-Fi', \n" +
+"COUNT(CASE WHEN b.genre = 'Technology' THEN 7 ELSE NULL END) AS 'Technology', \n" +
+"COUNT(CASE WHEN b.genre = 'Terror' THEN 8 ELSE NULL END) AS 'Terror' \n" +
+"FROM genres g JOIN books b\n" +
+"GROUP BY genre;";            
+
+            resultSet = statement.executeQuery(sql);
+
+            while (resultSet.next()) {
+                booksPerGenreCount.getData().add(new XYChart.Data(resultSet.getString(1), resultSet.getInt(2)));
+                booksPerGenreCount.getData().add(new XYChart.Data(resultSet.getString(1), resultSet.getInt(3)));
+                booksPerGenreCount.getData().add(new XYChart.Data(resultSet.getString(1), resultSet.getInt(4)));
+                booksPerGenreCount.getData().add(new XYChart.Data(resultSet.getString(1), resultSet.getInt(5)));
+                booksPerGenreCount.getData().add(new XYChart.Data(resultSet.getString(1), resultSet.getInt(6)));
+                booksPerGenreCount.getData().add(new XYChart.Data(resultSet.getString(1), resultSet.getInt(7)));
+                booksPerGenreCount.getData().add(new XYChart.Data(resultSet.getString(1), resultSet.getInt(8)));
+                booksPerGenreCount.getData().add(new XYChart.Data(resultSet.getString(1), resultSet.getInt(9)));  
+            }  
+        }
+        catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        finally {
+            if (conn != null)
+                conn.close();
+            if (statement != null)
+                statement.close();
+            if (resultSet != null)
+                resultSet.close();
+        }
+        
+        
     }
     /**
      * This method will switch to the insertNewBook scene when the button is pushed 

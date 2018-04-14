@@ -136,8 +136,7 @@ public class Book {
      */
     public static List<String> getGenres()
     {
-      String[] genres = {"Adventure", "Biography", "Business", "Crime", "Fantasy" , "Health", "History", "Humour", 
-          "Political", "Romance", "Sci-Fi", "Self-Help", "Sports", "Technology", "Terror"};
+      String[] genres = {"Adventure", "Biography", "Crime", "Fantasy", "History", "Sci-Fi", "Technology", "Terror"};            
       return Arrays.asList(genres);
     }
 

@@ -19,7 +19,7 @@ import java.util.List;
  * @author Henrique
  */
 public class Book {
-    private int bookID, year;
+    private int bookID, publishingYear;
     private String title, author, genre;
     private File imageFile;
 
@@ -30,12 +30,12 @@ public class Book {
      * @param author
      * @param genre 
      */
-    public Book(int year, String title, String author, String genre) {
-        setYear(year);
+    public Book(String title, String author, String genre, int year) {        
         setTitle(title);
         setAuthor(author);
         setGenre(genre);
-        setImageFile(new File("./scr/images/Contact_default.png"));
+        setYear(year);
+        setImageFile(new File("./scr/images/default.png"));
     }
     
     /**
@@ -48,8 +48,8 @@ public class Book {
      * @param imageFile
      * @throws IOException 
      */
-    public Book(int year, String title, String author, String genre, File imageFile) throws IOException {
-        this(year, title, author, genre);
+    public Book(String title, String author, String genre, int year, File imageFile) throws IOException {
+        this(title, author, genre, year);
         setImageFile(imageFile);
         copyImageFile();
     }
@@ -78,7 +78,7 @@ public class Book {
      * @return year
      */
     public int getYear() {
-        return year;
+        return publishingYear;
     }
 
     /**
@@ -87,7 +87,7 @@ public class Book {
      */
     public void setYear(int year) {
         if(year >= 1900 || year <= 2018)        
-            this.year = year;
+            this.publishingYear = year;
         else
             throw new IllegalArgumentException("This library only accepts books that were published since 1900");
     }
@@ -289,7 +289,7 @@ public class Book {
             preparedStatement.setString(1, title);  
             preparedStatement.setString(2, author); 
             preparedStatement.setString(3, genre); 
-            preparedStatement.setInt(4, year);
+            preparedStatement.setInt(4, publishingYear);
             preparedStatement.setString(5, imageFile.getName());
             
             preparedStatement.executeUpdate();

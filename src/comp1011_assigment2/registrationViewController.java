@@ -83,7 +83,7 @@ public class registrationViewController implements Initializable {
     }
     
     /**
-     * This method will change to the loginview without adding a new user
+     * This method will change to the logInView without adding a new user
      * @param event
      * @throws java.io.IOException
      */

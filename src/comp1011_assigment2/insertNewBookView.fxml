@@ -86,7 +86,7 @@
                   </VBox>
                </children>
             </HBox>
-            <Label fx:id="errorMsgLabel" text="Label" />
+            <Label fx:id="errorMsgLabel" prefHeight="17.0" prefWidth="415.0" />
             <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
                   <Button fx:id="saveBookBtn" mnemonicParsing="false" text="Save Book" />

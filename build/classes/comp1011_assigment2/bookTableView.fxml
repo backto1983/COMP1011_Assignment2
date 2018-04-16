@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="975.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp1011_assigment2.BookTableViewController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="1000.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp1011_assigment2.BookTableViewController">
     <stylesheets>
         <URL value="@booktableview.css" />
     </stylesheets>
@@ -33,22 +33,22 @@
             </BarChart>
          </children>
       </VBox>
-      <VBox alignment="TOP_CENTER" layoutX="400.0" prefHeight="400.0" prefWidth="550.0" spacing="10.0">
+      <VBox alignment="TOP_CENTER" layoutX="400.0" prefHeight="400.0" prefWidth="575.0" spacing="10.0">
          <children>
             <Label text="List of Books">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <HBox prefHeight="274.0" prefWidth="500.0">
+            <HBox prefHeight="274.0" prefWidth="525.0">
                <children>
-                  <TableView fx:id="booksTable" prefHeight="274.0" prefWidth="530.0">
+                  <TableView fx:id="booksTable" prefHeight="274.0" prefWidth="555.0">
                     <columns>
                       <TableColumn fx:id="idColumn" prefWidth="25.0" text="ID" />
                       <TableColumn fx:id="titleColumn" prefWidth="226.0" text="Title" />
                         <TableColumn fx:id="authorColumn" prefWidth="150.0" text="Author" />
                         <TableColumn fx:id="genreColumn" prefWidth="77.0" text="Genre" />
-                        <TableColumn fx:id="yearColumn" prefWidth="50.0" text="Year" />
+                        <TableColumn fx:id="yearColumn" prefWidth="58.0" text="Year" />
                     </columns>
                   </TableView>
                </children>

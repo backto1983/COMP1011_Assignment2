@@ -156,10 +156,10 @@ public class InsertNewBookController implements Initializable {
         catch (IOException e) {
             System.err.println(e.getMessage());
         }
+         
+        this.changeCoverBtn.setOnAction(event -> {chooseImageButtonPushed(event);});
         
-        this.changeCoverBtn.setOnAction(this::chooseImageButtonPushed); //??        
- 
-        this.saveBookBtn.setOnAction(this::saveBookButtonPushed); //??
+        this.saveBookBtn.setOnAction(event -> {saveBookButtonPushed(event);});
         
         this.cancelBtn.setOnAction(event -> {
             try {

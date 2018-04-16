@@ -1,5 +1,6 @@
 package comp1011_assigment2;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -13,6 +14,8 @@ import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -88,7 +91,8 @@ public class BookTableViewController implements Initializable {
         barChart.getData().addAll(booksPerGenreCount);
         
         // Configure the table columns
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("bookID"));
+        
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("bookID"));        
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
         genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
@@ -119,9 +123,9 @@ public class BookTableViewController implements Initializable {
      */
     private void getDataForGraph() throws SQLException {
         
-        Connection conn=null;
-        Statement statement=null;
-        ResultSet resultSet=null;
+        Connection conn = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
         
         try {
             conn = DriverManager.getConnection("jdbc:mysql://sql.computerstudi.es:3306/gc200358165", "gc200358165", "FBNs7TjT");
@@ -209,30 +213,53 @@ public class BookTableViewController implements Initializable {
      * This method allows to use a TextField to search for books contained in the table 
      * @param event
      */
-    public void searchBooks (KeyEvent event) {
-        ObservableList completeList =  booksTable.getItems();
+    public void searchBooks (KeyEvent event) {        
+        books = booksTable.getItems();
+        
+        // The code below was adapted from the following source http://code.makery.ch/blog/javafx-8-tableview-sorting-filtering/
                 
-        searchField.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
-            
-            if (oldValue != null && (newValue.length() < oldValue.length())) 
-                booksTable.setItems(completeList);
-            
-            String value = newValue.toLowerCase();
-            ObservableList<Book> subentries = FXCollections.observableArrayList();
+        // Wrap the ObservableList (books) in a FilteredList, so all books are initially displayed
+        FilteredList<Book> filteredList = new FilteredList<>(books, b -> true);
+        
+        // Use the searchField to filter results using Predicate, which takes a book as an argument and returns a 
+        // boolean; if it is true, display filtered books based on title, author and genre, if there is no match, 
+        // return false (table should not show any results)       
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredList.setPredicate(book -> {
+                // If filter text is empty, display all books
+                if (newValue == null || newValue.isEmpty()) 
+                    return true;                
+                
+                String lowerCaseFilter = newValue.toLowerCase();
 
-            long count = booksTable.getColumns().stream().count();
-            
-            for (int i = 0; i < booksTable.getItems().size(); i++) {
-                for (int j = 0; j < count; j++) {
-                    String entry = "" + booksTable.getColumns().get(j).getCellData(i);
-                    if (entry.toLowerCase().contains(value)) {
-                        subentries.add(booksTable.getItems().get(i));
-                        break;
-                    }
-                }
-            }
-            booksTable.setItems(subentries);
+                if (book.getTitle().toLowerCase().contains(lowerCaseFilter)) 
+                    return true; // Filter matches title
+                
+                else if (book.getAuthor().toLowerCase().contains(lowerCaseFilter)) 
+                    return true; // Filter matches author 
+                
+                else if (book.getGenre().toLowerCase().contains(lowerCaseFilter)) 
+                    return true; // Filter matches genre
+                
+                return false;
+            });
         });
+        // Wrap the FilteredList in a SortedList
+        SortedList<Book> sortedList = new SortedList<>(filteredList);
+
+        // Bind the SortedList comparator to the TableView comparator
+        sortedList.comparatorProperty().bind(booksTable.comparatorProperty());
+
+        // Add sorted and filtered data to the table
+        booksTable.setItems(sortedList);
+        
+        /*
+        arrayList.stream()
+                 .peek(name -> System.out.printf("%nname before filter: %s", name))
+                 .filter(name -> name.substring(0, 1).equals("J"))
+                 .peek(name -> System.out.printf(" name after filter: %s%n", name))
+                 .forEach(name -> System.out.println());
+        */
     }         
 }
 

@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,20 +48,20 @@ public class InsertNewBookController implements Initializable {
      * @param event 
      */
     public void chooseImageButtonPushed(ActionEvent event) {
-        //Get the stage to open a new window 
+        // Get the stage to open a new window 
         Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow(); 
         
-        //Instantitate a FileChooser object 
+        // Instantitate a FileChooser object 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose Image");
         
-        //Set a filter for .jpg and .png files
+        // Set a filter for .jpg and .png files
         FileChooser.ExtensionFilter jpgFilter = new FileChooser.ExtensionFilter("Image file (*.jpg)", "*.jpg");
         FileChooser.ExtensionFilter pngFilter = new FileChooser.ExtensionFilter("Image file (*.png)", "*.png");
         
         fileChooser.getExtensionFilters().addAll(jpgFilter, pngFilter);
         
-        //Set to the user's picture directory or user home directory if not available
+        // Set to the user's picture directory or user home directory if not available
         String userDirectoryString = System.getProperty("user.home") + "\\Pictures";
         File userDirectory = new File(userDirectoryString);
         
@@ -71,13 +70,13 @@ public class InsertNewBookController implements Initializable {
         
         fileChooser.setInitialDirectory(userDirectory);
         
-        //Open the file dialog window
+        // Open the file dialog window
         File tmpImageFile = fileChooser.showOpenDialog(stage);
         
         if(tmpImageFile != null) {            
             imageFile = tmpImageFile;
             
-            //Update the ImageView with a new image
+            // Update the ImageView with a new image
             if(imageFile.isFile()) {
                 try {
                     BufferedImage bufferedImage = ImageIO.read(imageFile);
@@ -111,17 +110,16 @@ public class InsertNewBookController implements Initializable {
     public void saveBookButtonPushed(ActionEvent event) {
         try {
             Book book;
-            int year = Integer.parseInt(yearTextField.getText());
             
-            if(imageFileChanged) {      
-                book = new Book(titleTextField.getText(), authorTextField.getText(), genreComboBox.getValue(), year,  
-                                imageFile);
-            }
-            
-            else 
-                book = new Book(titleTextField.getText(), authorTextField.getText(), genreComboBox.getValue(), year); 
+            if(imageFileChanged)       
+                book = new Book(titleTextField.getText(), authorTextField.getText(), genreComboBox.getValue(), 
+                                Integer.parseInt(yearTextField.getText()), imageFile);
 
-            errorMsgLabel.setText(""); //Absence of error message in case object creation was successful
+            else 
+                book = new Book(titleTextField.getText(), authorTextField.getText(), genreComboBox.getValue(), 
+                                Integer.parseInt(yearTextField.getText())); 
+
+            errorMsgLabel.setText(""); // Absence of error message in case object creation was successful
             
             book.insertIntoDB();
             
@@ -141,14 +139,14 @@ public class InsertNewBookController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        imageFileChanged = false; //Initially the image has not changed; use the default
-        errorMsgLabel.setText(""); //Set the error message to be empty
+        imageFileChanged = false; // Initially the image has not changed; use the default
+        errorMsgLabel.setText(""); // Set the error message to be empty
         
         // Setup genreComboBox
         genreComboBox.getItems().addAll(Book.getGenres());
         genreComboBox.getSelectionModel().selectFirst();
         
-        //Load the default image
+        // Load the default image
         try {
             imageFile = new File("./src/comp1011_assigment2/images/default.png");
             BufferedImage bufferedImage = ImageIO.read(imageFile);

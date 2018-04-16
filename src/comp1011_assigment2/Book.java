@@ -186,7 +186,7 @@ public class Book {
         
         String uniqueFileName = getUniqueFileName(imageFile.getName());
         
-        Path targetPath = Paths.get("./src/images/" + uniqueFileName);
+        Path targetPath = Paths.get("./src/comp1011_assigment2/images/" + uniqueFileName);
         
         //Copy the file to the new directory
         Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
@@ -256,7 +256,7 @@ public class Book {
      * @return boolean
      */
     public boolean uniqueFileInDirectory(String fileName) {
-        File directory = new File("./src/images/");
+        File directory = new File("./src/comp1011_assigment2/images/");
         
         File[] directoryContents = directory.listFiles();
         

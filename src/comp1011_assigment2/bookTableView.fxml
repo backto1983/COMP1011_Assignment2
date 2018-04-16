@@ -11,13 +11,12 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="1000.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp1011_assigment2.BookTableViewController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="975.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp1011_assigment2.BookTableViewController">
     <stylesheets>
         <URL value="@booktableview.css" />
     </stylesheets>
@@ -34,36 +33,29 @@
             </BarChart>
          </children>
       </VBox>
-      <VBox alignment="TOP_CENTER" layoutX="400.0" prefHeight="400.0" prefWidth="600.0" spacing="10.0">
+      <VBox alignment="TOP_CENTER" layoutX="400.0" prefHeight="400.0" prefWidth="550.0" spacing="10.0">
          <children>
             <Label text="List of Books">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <HBox prefWidth="500.0">
+            <HBox prefHeight="274.0" prefWidth="500.0">
                <children>
-                  <TableView fx:id="booksTable" prefHeight="276.0" prefWidth="404.0">
+                  <TableView fx:id="booksTable" prefHeight="274.0" prefWidth="530.0">
                     <columns>
                       <TableColumn fx:id="idColumn" prefWidth="25.0" text="ID" />
-                      <TableColumn fx:id="titleColumn" prefWidth="125.0" text="Title" />
-                        <TableColumn fx:id="authorColumn" prefWidth="125.0" text="Author" />
+                      <TableColumn fx:id="titleColumn" prefWidth="226.0" text="Title" />
+                        <TableColumn fx:id="authorColumn" prefWidth="150.0" text="Author" />
                         <TableColumn fx:id="genreColumn" prefWidth="77.0" text="Genre" />
                         <TableColumn fx:id="yearColumn" prefWidth="50.0" text="Year" />
                     </columns>
                   </TableView>
-                  <VBox alignment="CENTER" prefHeight="275.0" prefWidth="175.0" spacing="20.0">
-                     <children>
-                        <ImageView fx:id="imageView" fitHeight="200.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label text="Click on a book to see its cover" />
-                     </children>
-                  </VBox>
                </children>
             </HBox>
             <ToolBar prefHeight="40.0" prefWidth="200.0">
               <items>
-                  <TextField promptText="Search by title" />
-                <Button mnemonicParsing="false" text="Search" />
+                  <TextField fx:id="searchField" onKeyTyped="#searchBooks" promptText="Search " />
                   <Button fx:id="insertNewBookBtn" mnemonicParsing="false" text="Insert New Book" />
               </items>
                <padding>

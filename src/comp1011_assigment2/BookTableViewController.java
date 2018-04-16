@@ -1,6 +1,5 @@
 package comp1011_assigment2;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -11,6 +10,7 @@ import java.sql.Statement;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,8 +23,10 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 
 /**
  * FXML Controller class
@@ -39,13 +41,16 @@ public class BookTableViewController implements Initializable {
     @FXML private TableColumn<Book, String> authorColumn;
     @FXML private TableColumn<Book, String> genreColumn;
     @FXML private TableColumn<Book, Integer> yearColumn;
-    @FXML private ImageView imageView;
     @FXML private Button insertNewBookBtn;
+    //@FXML private ImageView imageView;
     
     @FXML private BarChart<Book, Integer> barChart;
     @FXML private CategoryAxis genres;
     @FXML private NumberAxis numberOfBooks;
     private XYChart.Series booksPerGenreCount;
+
+    @FXML private TextField searchField;
+    ObservableList<Book> books = FXCollections.observableArrayList();
     
     /**
      * This method will change to the insertNewBookView
@@ -82,7 +87,7 @@ public class BookTableViewController implements Initializable {
 
         barChart.getData().addAll(booksPerGenreCount);
         
-        //Configure the table columns
+        // Configure the table columns
         idColumn.setCellValueFactory(new PropertyValueFactory<>("bookID"));
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
@@ -103,11 +108,15 @@ public class BookTableViewController implements Initializable {
                 insertNewBookButtonPushed(event);
             }
             catch(IOException ex) {
-                Logger.getLogger(registrationViewController.class.getName()).log(Level.SEVERE, null, ex);                
+                Logger.getLogger(InsertNewBookController.class.getName()).log(Level.SEVERE, null, ex);                
             }
         });
     }    
 
+    /**
+     * This method gets data from the db to create a bar graph
+     * @throws SQLException 
+     */
     private void getDataForGraph() throws SQLException {
         
         Connection conn=null;
@@ -139,16 +148,21 @@ public class BookTableViewController implements Initializable {
                 resultSet.close();
         }  
     }
+    
     /**
-     * This method will switch to the insertNewBook scene when the button is pushed 
+     * This method will switch to the insertNewBookView scene when the button is pushed 
      * @param event
      * @throws java.io.IOException
      */
-    public void newContactButtonPushed(ActionEvent event) throws IOException {
+    public void newBookButtonPushed(ActionEvent event) throws IOException {
         SceneChanger sc = new SceneChanger();
-        sc.changeScenes(event, "NewContactView.fxml", "Create new Contact");
+        sc.changeScenes(event, "insertNewBookView.fxml", "Insert new Book");
     }
 
+    /**
+     * This method populates a table with books from the db
+     * @throws SQLException 
+     */
     private void loadBooks() throws SQLException {        
         Connection conn = null;
         Statement statement = null;
@@ -188,7 +202,37 @@ public class BookTableViewController implements Initializable {
                 
             if(resultSet != null)
                 resultSet.close();
-        }
-        
+        }        
     }  
+    
+    /**
+     * This method allows to use a TextField to search for books contained in the table 
+     * @param event
+     */
+    public void searchBooks (KeyEvent event) {
+        ObservableList completeList =  booksTable.getItems();
+                
+        searchField.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            
+            if (oldValue != null && (newValue.length() < oldValue.length())) 
+                booksTable.setItems(completeList);
+            
+            String value = newValue.toLowerCase();
+            ObservableList<Book> subentries = FXCollections.observableArrayList();
+
+            long count = booksTable.getColumns().stream().count();
+            
+            for (int i = 0; i < booksTable.getItems().size(); i++) {
+                for (int j = 0; j < count; j++) {
+                    String entry = "" + booksTable.getColumns().get(j).getCellData(i);
+                    if (entry.toLowerCase().contains(value)) {
+                        subentries.add(booksTable.getItems().get(i));
+                        break;
+                    }
+                }
+            }
+            booksTable.setItems(subentries);
+        });
+    }         
 }
+

@@ -84,7 +84,7 @@ public class LogInViewController implements Initializable {
 
             if (userPW.equals(dbPassword)) {
                 SceneChanger sc = new SceneChanger();
-                sc.changeScenes(event, "bookTableView.fxml", "User Table View");
+                sc.changeScenes(event, "bookTableView.fxml", "Book Table View");
             }                
             else
                 errorMsgLabel.setText("Password is not correct, please try again");

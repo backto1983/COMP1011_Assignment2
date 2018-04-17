@@ -11,7 +11,6 @@ import java.sql.Statement;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -28,8 +27,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 
 /**
  * FXML Controller class
@@ -45,7 +42,6 @@ public class BookTableViewController implements Initializable {
     @FXML private TableColumn<Book, String> genreColumn;
     @FXML private TableColumn<Book, Integer> yearColumn;
     @FXML private Button insertNewBookBtn;
-    //@FXML private ImageView imageView;
     
     @FXML private BarChart<Book, Integer> barChart;
     @FXML private CategoryAxis genres;
@@ -80,7 +76,7 @@ public class BookTableViewController implements Initializable {
         numberOfBooks.setLabel("Number of books");
         
         // Add data to the graphs
-        try{
+        try {
             getDataForGraph();
         }
         catch (SQLException e)
@@ -114,7 +110,7 @@ public class BookTableViewController implements Initializable {
             catch(IOException ex) {
                 Logger.getLogger(InsertNewBookController.class.getName()).log(Level.SEVERE, null, ex);                
             }
-        });
+        });  
     }    
 
     /**
@@ -136,9 +132,9 @@ public class BookTableViewController implements Initializable {
 
             resultSet = statement.executeQuery(sql);
 
-            while (resultSet.next()) {
+            while (resultSet.next()) 
                 booksPerGenreCount.getData().add(new XYChart.Data(resultSet.getString(1), resultSet.getInt(2))); 
-            }  
+             
         }
         catch (SQLException e) {
             System.err.println(e.getMessage());
@@ -181,7 +177,7 @@ public class BookTableViewController implements Initializable {
             //Create the SQL query
             resultSet = statement.executeQuery("SELECT * FROM books");
 
-            //Create contact objects from each record
+            //Create book objects from each record
             while(resultSet.next()) {
                 Book book = new Book(resultSet.getString("title"), 
                                      resultSet.getString("author"), 
@@ -211,9 +207,14 @@ public class BookTableViewController implements Initializable {
     
     /**
      * This method allows to use a TextField to search for books contained in the table 
-     * @param event
      */
-    public void searchBooks (KeyEvent event) {        
+    public void searchBooks () {        
+        /*
+            booksTable.getItems().stream()
+                .filter((Book title) -> title.equals(searchField))
+                .forEach(Book -> books.add(0, Book));  
+        */      
+ 
         books = booksTable.getItems();
         
         // The code below was adapted from the following source http://code.makery.ch/blog/javafx-8-tableview-sorting-filtering/
@@ -252,13 +253,14 @@ public class BookTableViewController implements Initializable {
 
         // Add sorted and filtered data to the table
         booksTable.setItems(sortedList);
+
         
         /*
         arrayList.stream()
                  .peek(name -> System.out.printf("%nname before filter: %s", name))
                  .filter(name -> name.substring(0, 1).equals("J"))
                  .peek(name -> System.out.printf(" name after filter: %s%n", name))
-                 .forEach(name -> System.out.println());
+                 .forEach(name -> System.out.println());        
         */
     }         
 }

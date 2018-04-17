@@ -99,7 +99,7 @@ public class InsertNewBookController implements Initializable {
      */
     public void cancelButtonPushed(ActionEvent event) throws IOException {
         SceneChanger sc = new SceneChanger();
-        sc.changeScenes(event, "bookTableView.fxml", "Books Table");
+        sc.changeScenes(event, "bookTableView.fxml", "Book Table View");
     }
     
     /**

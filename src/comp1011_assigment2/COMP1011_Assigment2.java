@@ -14,7 +14,7 @@ public class COMP1011_Assigment2 extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("bookTableView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("registrationView.fxml"));
         
         Scene scene = new Scene(root);
         

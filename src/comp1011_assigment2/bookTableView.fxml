@@ -42,7 +42,7 @@
             </Label>
             <HBox prefHeight="274.0" prefWidth="525.0" spacing="10.0">
                <children>
-                  <TableView fx:id="booksTable" prefHeight="274.0" prefWidth="555.0">
+                  <TableView fx:id="booksTable" onSort="#searchBooks" prefHeight="274.0" prefWidth="555.0">
                     <columns>
                       <TableColumn fx:id="idColumn" prefWidth="25.0" text="ID" />
                       <TableColumn fx:id="titleColumn" prefWidth="226.0" text="Title" />

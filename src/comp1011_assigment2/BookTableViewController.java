@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
@@ -209,12 +210,16 @@ public class BookTableViewController implements Initializable {
      * This method allows to use a TextField to search for books contained in the table 
      */
     public void searchBooks () {        
+        books = booksTable.getItems();   
+        
+        booksTable.getItems().stream()
+            .sorted()
+            .filter((Book title) -> title.getTitle().contains(searchField.getText())) // or .equals()
+            .filter((Book author) -> author.getAuthor().contains(searchField.getText()))
+            .filter((Book genre) -> genre.getGenre().contains(searchField.getText()))
+            .forEach(Book -> booksTable.setItems(books)); 
+            
         /*
-            booksTable.getItems().stream()
-                .filter((Book title) -> title.equals(searchField))
-                .forEach(Book -> books.add(0, Book));  
-        */      
- 
         books = booksTable.getItems();
         
         // The code below was adapted from the following source http://code.makery.ch/blog/javafx-8-tableview-sorting-filtering/

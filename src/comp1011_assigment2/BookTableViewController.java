@@ -209,15 +209,17 @@ public class BookTableViewController implements Initializable {
     /**
      * This method allows to use a TextField to search for books contained in the table 
      */
-    public void searchBooks () {        
+    public void searchBooks() {        
         books = booksTable.getItems();   
         
         booksTable.getItems().stream()
-            .sorted()
+             // sorted() do I need to sort?
             .filter((Book title) -> title.getTitle().contains(searchField.getText())) // or .equals()
             .filter((Book author) -> author.getAuthor().contains(searchField.getText()))
-            .filter((Book genre) -> genre.getGenre().contains(searchField.getText()))
-            .forEach(Book -> booksTable.setItems(books)); 
+            .filter((Book genre) -> genre.getGenre().contains(searchField.getText()))                
+            .forEach(Book -> books.add(Book)); 
+        
+            //.forEach(Book -> booksTable.setItems(books)); 
             
         /*
         books = booksTable.getItems();

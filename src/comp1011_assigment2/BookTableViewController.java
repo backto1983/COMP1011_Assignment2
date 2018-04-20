@@ -8,6 +8,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Comparator;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 import java.util.logging.Level;
@@ -93,7 +94,7 @@ public class BookTableViewController implements Initializable {
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
         genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
-        yearColumn.setCellValueFactory(new PropertyValueFactory<>("publishingYear"));
+        yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
         
         try {
             loadBooks();
@@ -211,19 +212,16 @@ public class BookTableViewController implements Initializable {
      */
     public void searchBooks() {        
         books = booksTable.getItems();   
-        
+        /*
         booksTable.getItems().stream()
-             // sorted() do I need to sort?
             .filter((Book title) -> title.getTitle().contains(searchField.getText())) // or .equals()
             .filter((Book author) -> author.getAuthor().contains(searchField.getText()))
-            .filter((Book genre) -> genre.getGenre().contains(searchField.getText()))                
+            .filter((Book genre) -> genre.getGenre().contains(searchField.getText()))  
+            .sorted(Comparator.comparing(Book::getTitle))
+            .peek(Book -> booksTable.setItems(books))
             .forEach(Book -> books.add(Book)); 
-        
-            //.forEach(Book -> booksTable.setItems(books)); 
-            
-        /*
-        books = booksTable.getItems();
-        
+        */
+
         // The code below was adapted from the following source http://code.makery.ch/blog/javafx-8-tableview-sorting-filtering/
                 
         // Wrap the ObservableList (books) in a FilteredList, so all books are initially displayed
@@ -260,15 +258,6 @@ public class BookTableViewController implements Initializable {
 
         // Add sorted and filtered data to the table
         booksTable.setItems(sortedList);
-
-        
-        /*
-        arrayList.stream()
-                 .peek(name -> System.out.printf("%nname before filter: %s", name))
-                 .filter(name -> name.substring(0, 1).equals("J"))
-                 .peek(name -> System.out.printf(" name after filter: %s%n", name))
-                 .forEach(name -> System.out.println());        
-        */
     }         
 }
 

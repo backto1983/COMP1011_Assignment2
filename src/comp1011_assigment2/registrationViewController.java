@@ -5,6 +5,7 @@ import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
@@ -37,8 +38,14 @@ public class registrationViewController implements Initializable {
      */
     public void submitButtonPushed(ActionEvent event) throws SQLException, IOException, NoSuchAlgorithmException {
         
-        if(!User.validEmail(emailTextField.getText()))
-            errorMsgLabel.setText("Email must match the pattern email@email.com");
+        if(!User.validEmail(emailTextField.getText())) {
+            //errorMsgLabel.setText("Email must match the pattern email@email.com");            
+            
+            // Use the errorMsgLabel to show an error message using Consumer, which takes an argument but do not 
+            // return anything    
+            Consumer<String> display = (errorMsg) -> errorMsgLabel.setText(errorMsg);
+            display.accept("Email must match the pattern email@email.com");
+        }
         else {        
             if(pwdField.getText().isEmpty() )
                 errorMsgLabel.setText("Please choose a password");
@@ -67,7 +74,10 @@ public class registrationViewController implements Initializable {
      */
     public boolean validPassword() {
         if (pwdField.getText().length() < 7) {
-            errorMsgLabel.setText("Passwords must have 7 characters or more");
+            //errorMsgLabel.setText("Passwords must have 7 characters or more");            
+            Consumer<String> display = (errorMsg) -> errorMsgLabel.setText(errorMsg);
+            display.accept("Passwords must have 7 characters or more");
+            
             return false;
         }        
         else if(!pwdField.getText().equals(confirmPwdField.getText())) {

@@ -39,8 +39,9 @@ public class LogInViewController implements Initializable {
      * @throws java.io.IOException 
      */
     public void logInButtonPushed(ActionEvent event) throws SQLException, NoSuchAlgorithmException, IOException {
-        if(!User.validEmail(emailTextField.getText()))
+        if(!User.validEmail(emailTextField.getText())) 
             errorMsgLabel.setText("Please type your email");
+        
         else {        
             if(pwdField.getText().isEmpty() )
                 errorMsgLabel.setText("Please enter your password");
